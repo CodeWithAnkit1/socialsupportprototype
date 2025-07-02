@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: social-support-app
+  labels:
+    app: social-support
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: social-support
+  template:
+    metadata:
+      labels:
+        app: social-support
+    spec:
+      containers:
+      - name: social-support-app
+        image: your-registry/social-support-app:dev
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8501
+          name: streamlit
+        - containerPort: 11434
+          name: ollama
+        envFrom:
+        - secretRef:
+            name: social-support-secrets
+        resources:
+          limits:
+            memory: "4Gi"  # Increased for Windows
+            cpu: "2"
+          requests:
+            memory: "2Gi"
+            cpu: "1"
+        volumeMounts:
+        - name: data-volume
+          mountPath: C:\app\db
+        - name: models-volume
+          mountPath: C:\Models
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: social-support-pvc
+      - name: models-volume
+        persistentVolumeClaim:
+          claimName: models-pvc
+      # nodeSelector:
+      #   kubernetes.io/os: windows
+      # tolerations:
+      # - key: "os"
+      #   operator: "Equal"
+      #   value: "windows"
+      #   effect: "NoSchedule"
+      # securityContext:
+      #   windowsOptions:
+      #     runAsUserName: "ContainerAdministrator"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: social-support-service
+spec:
+  selector:
+    app: social-support
+  ports:
+    - name: web
+      protocol: TCP
+      port: 80
+      targetPort: 8501
+    - name: ollama
+      protocol: TCP
+      port: 11434
+      targetPort: 11434
+  type: LoadBalancer

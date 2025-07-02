@@ -1,0 +1,74 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.egg-info/
+*.egg
+*.log
+
+# Virtual environments
+env/
+venv/
+.myenv/
+.venv/
+myenv/
+ENV/
+env.bak/
+pip-wheel-metadata/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# VSCode
+.vscode/
+.history/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker
+*.tar
+*.pid
+
+# Environment variables and secrets
+.env
+.env.*
+*.secret
+secrets.yaml
+
+# Models and data
+*.h5
+*.db
+*.sqlite3
+
+# Streamlit cache
+.streamlit/
+
+# Kubernetes
+*.yaml~
+*.yml~
+
+# Ollama models (if large)
+ollama_models/
+
+# Build artifacts
+build/
+dist/
+*.so
+
+# Coverage reports
+htmlcov/
+.coverage
+.tox/
+.nox/
+.cache/
+coverage.xml
+
+# Misc
+*.bak
+*.swp
+*.tmp
